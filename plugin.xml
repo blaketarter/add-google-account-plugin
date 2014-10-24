@@ -1,0 +1,34 @@
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.btarter.GoogleAccount"
+    version="1.0.0">
+
+    <name>Add Google Account</name>
+
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
+    <description>This plugin opens up the dialog to add a google account.</description>
+    <author>Blake Tarter - blaketarter.com</author>
+    <keywords></keywords>
+
+    <license>CC4.0NCAttrib</license>
+
+    <js-module src="www/GoogleAccount.js" name="GoogleAccount">
+        <clobbers target="window.googleAccount" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+
+        <config-file target="res/xml/config.xml" parent="/*">
+          <feature name="GoogleAccountPlugin" >
+            <param name="android-package" value="com.btarter.GoogleAccount.GoogleAccountPlugin"/>
+          </feature>
+        </config-file>
+
+        <source-file src="src/android/GoogleAccountPlugin.java" target-dir="src/com/btarter/GoogleAccountPlugin" />
+
+    </platform>
+</plugin>
