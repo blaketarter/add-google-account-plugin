@@ -20,7 +20,7 @@ CK.app = {
    return cordova.exec(successCallback, failureCallback, 'GoogleAccountPlugin',
      'getGoogleAccount', []);
   },
-  startActivity : function(params, success, fail) {
+  forceAppUpdate : function(params, success, fail) {
     return cordova.exec(function(args) {
         success(args);
     }, function(args) {
@@ -28,3 +28,5 @@ CK.app = {
     }, 'GoogleAccountPlugin', 'forceAppUpdate', [params]);
   }
 };
+
+module.exports = CK.app;

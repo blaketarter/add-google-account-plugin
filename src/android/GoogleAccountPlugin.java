@@ -27,8 +27,10 @@ import org.apache.cordova.PluginResult;
  */
 public class GoogleAccountPlugin extends CordovaPlugin {
 
+    private CallbackContext callbackContext = null;
+
     @Override
-    public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) {
+    public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
 
         if (action.equals("addGoogleAccount")) {
           try {
@@ -52,12 +54,27 @@ public class GoogleAccountPlugin extends CordovaPlugin {
                 public void run() {
                     Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
                     Account[] accounts = AccountManager.get(cordova.getActivity().getApplicationContext()).getAccounts();
-                    for (Account account : accounts) {
-                        if (emailPattern.matcher(account.name).matches()) {
-                            String possibleEmail = account.name;
-                            callbackContext.success(possibleEmail); // Thread-safe.
-                            // return true;
-                        }
+                    List<String> accountsArray = new ArrayList<String>();
+
+                    if (accounts.length) {
+                      for (Account account : accounts) {
+                          if (emailPattern.matcher(account.name).matches()) {
+                              String stringAccount = new String(account);
+                              accountsArray.add(stringAccount);
+                              // callbackContext.success(possibleEmail); // Thread-safe.
+                              // return true;
+                          }
+                      }
+
+                      if (accountsArray.length) {
+                        JSONArray jsonAccounts = new JSONArray(accountsArray);
+                        callbackContext.success(jsonAccounts);
+                      } else {
+                        callbackContext.error();
+                      }
+
+                    } else {
+                      callbackContext.error();
                     }
                 }
             });
@@ -90,10 +107,14 @@ public class GoogleAccountPlugin extends CordovaPlugin {
           } catch (Error e) {
             return false;
           }
-        return false;
+      }
+      return false;
     }
 
-    void forceActivity(String action, Uri uri, String type, Map<String, String> extras) {
+    static final int FORCE_UPDATE_APP = 1; //request code
+
+    public void forceActivity(String action, Uri uri, String type, Map<String, String> extras) {
+
         Intent i = (uri != null ? new Intent(action, uri) : new Intent(action));
 
         if (type != null && uri != null) {
@@ -122,7 +143,20 @@ public class GoogleAccountPlugin extends CordovaPlugin {
                 i.putExtra(key, value);
             }
         }
-        
-        this.cordova.getActivity().startActivity(i);
+
+        this.cordova.getActivity().startActivityForResult(i, FORCE_UPDATE_APP);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == FORCE_UPDATE_APP) {
+            if (resultCode == Activity.RESULT_OK) {
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, intent);
     }
 }
