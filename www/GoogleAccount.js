@@ -19,14 +19,14 @@ CK.app = {
   getGoogleAccount: function(successCallback, failureCallback){
    return cordova.exec(successCallback, failureCallback, 'GoogleAccountPlugin',
      'getGoogleAccount', []);
-  },
-  forceAppUpdate : function(params, success, fail) {
-    return cordova.exec(function(args) {
-        success(args);
-    }, function(args) {
-        fail(args);
-    }, 'GoogleAccountPlugin', 'forceAppUpdate', [params]);
-  }
+  }//,
+  // forceAppUpdate : function(params, success, fail) {
+  //   return cordova.exec(function(args) {
+  //       success(args);
+  //   }, function(args) {
+  //       fail(args);
+  //   }, 'GoogleAccountPlugin', 'forceAppUpdate', [params]);
+  // }
 };
 
 module.exports = CK.app;
