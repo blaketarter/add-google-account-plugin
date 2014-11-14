@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.text.Html;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.ConnectionResult;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -109,7 +110,14 @@ public class GoogleAccountPlugin extends CordovaPlugin {
         }
         else if (action.equals("getGooglePlayServices")) {
           try {
-            checkGooglePlayServics(cordova.getActivity());
+            int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(cordova.getActivity());
+            if (resultCode != ConnectionResult.SUCCESS) {
+                if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                    GooglePlayServicesUtil.getErrorDialog(resultCode, activity, 9000).show();
+                }
+                return false;
+            }
+            return true;
           } catch (Error e) {
             return false;
           }
@@ -141,22 +149,6 @@ public class GoogleAccountPlugin extends CordovaPlugin {
         //     }
         // }
         return false;
-    }
-
-    /**
-     * Check the device to make sure it has the Google Play Services APK. If
-     * it doesn't, display a dialog that allows users to download the APK from
-     * the Google Play Store or enable it in the device's system settings.
-     */
-    public static boolean checkGooglePlayServices(Activity activity) {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, activity, 9000).show();
-            }
-            return false;
-        }
-        return true;
     }
 
     // static final int FORCE_UPDATE_APP = 1; //request code
