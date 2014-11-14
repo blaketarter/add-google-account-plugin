@@ -113,7 +113,7 @@ public class GoogleAccountPlugin extends CordovaPlugin {
             int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(cordova.getActivity());
             if (resultCode != ConnectionResult.SUCCESS) {
                 if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                    GooglePlayServicesUtil.getErrorDialog(resultCode, activity, 9000).show();
+                    GooglePlayServicesUtil.getErrorDialog(resultCode, cordova.getActivity(), 9000).show();
                 }
                 return false;
             }
