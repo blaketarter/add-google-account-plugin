@@ -20,6 +20,8 @@ import android.util.Patterns;
 import android.net.Uri;
 import android.text.Html;
 
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
@@ -35,91 +37,122 @@ public class GoogleAccountPlugin extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
 
         if (action.equals("addGoogleAccount")) {
-          try {
-            cordova.getThreadPool().execute(new Runnable() {
-                public void run() {
-                    // AccountManager acm = AccountManager.get(cordova.getActivity().getApplicationContext());
-                    // acm.addAccount("com.google", null, null, null, null, null, null);
+            try {
+                cordova.getThreadPool().execute(new Runnable() {
+                    public void run() {
+                        // AccountManager acm = AccountManager.get(cordova.getActivity().getApplicationContext());
+                        // acm.addAccount("com.google", null, null, null, null, null, null);
 
-                    // cordova.getActivity().getApplicationContext().startActivity(new Intent(Settings.ACTION_ADD_ACCOUNT).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        // cordova.getActivity().getApplicationContext().startActivity(new Intent(Settings.ACTION_ADD_ACCOUNT).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
-                    // callbackContext.success();
+                        // callbackContext.success();
 
 
-                    Intent addAccountIntent = new Intent(android.provider.Settings.ACTION_ADD_ACCOUNT)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    addAccountIntent.putExtra(Settings.EXTRA_ACCOUNT_TYPES, new String[] {"com.google"});
-                    cordova.getActivity().getApplicationContext().startActivity(addAccountIntent);
+                        Intent addAccountIntent = new Intent(android.provider.Settings.ACTION_ADD_ACCOUNT)
+                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        addAccountIntent.putExtra(Settings.EXTRA_ACCOUNT_TYPES, new String[] {"com.google"});
+                        cordova.getActivity().getApplicationContext().startActivity(addAccountIntent);
 
-                    callbackContext.success();
-                }
-            });
-            return true;
-          } catch (Error e) {
-            return false;
-          }
-        } else if (action.equals("getGoogleAccount")) {
-          try {
-            cordova.getThreadPool().execute(new Runnable() {
-                public void run() {
-                    Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
-                    Account[] accounts = AccountManager.get(cordova.getActivity().getApplicationContext()).getAccounts();
-                    List<String> accountsArray = new ArrayList<String>();
-
-                    if (accounts.length > 0) {
-                      for (Account account : accounts) {
-                          if (emailPattern.matcher(account.name).matches()) {
-                              String stringAccount = account.name;
-                              accountsArray.add(stringAccount);
-                              // callbackContext.success(possibleEmail); // Thread-safe.
-                              // return true;
-                          }
-                      }
-
-                      if (!accountsArray.isEmpty()) {
-                        JSONArray jsonAccounts = new JSONArray(accountsArray);
-                        callbackContext.success(jsonAccounts);
-                      } else {
-                        callbackContext.error("Error");
-                      }
-
-                    } else {
-                      callbackContext.error("Error");
+                        callbackContext.success();
                     }
-                }
-            });
-            return true;
-          } catch (Error e) {
-            return false;
-          }
+                });
+                return true;
+            } catch (Error e) {
+                return false;
+            }
+        } else if (action.equals("getGoogleAccount")) {
+            try {
+                cordova.getThreadPool().execute(new Runnable() {
+                    public void run() {
+                        Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
+                        Account[] accounts = AccountManager.get(cordova.getActivity().getApplicationContext()).getAccounts();
+                        List<String> accountsArray = new ArrayList<String>();
+
+                        if (accounts.length > 0) {
+                            for (Account account : accounts) {
+                                if (emailPattern.matcher(account.name).matches()) {
+                                    String stringAccount = account.name;
+                                    accountsArray.add(stringAccount);
+                                    // callbackContext.success(possibleEmail); // Thread-safe.
+                                    // return true;
+                                }
+                            }
+
+                            if (!accountsArray.isEmpty()) {
+                                JSONArray jsonAccounts = new JSONArray(accountsArray);
+                                callbackContext.success(jsonAccounts);
+                            } else {
+                                callbackContext.error("Error");
+                            }
+
+                        } else {
+                            callbackContext.error("Error");
+                        }
+                    }
+                });
+                return true;
+            } catch (Error e) {
+                return false;
+            }
         }
-      //   else if (action.equals("forceAppUpdate")) {
-      //     // Parse the arguments
-      //     JSONObject obj = args.getJSONObject(0);
-      //     String type = obj.has("type") ? obj.getString("type") : null;
-      //     Uri uri = obj.has("url") ? Uri.parse(obj.getString("url")) : null;
-      //     JSONObject extras = obj.has("extras") ? obj.getJSONObject("extras") : null;
-      //     Map<String, String> extrasMap = new HashMap<String, String>();
-      //
-      //     // Populate the extras if any exist
-      //     if (extras != null) {
-      //         JSONArray extraNames = extras.names();
-      //         for (int i = 0; i < extraNames.length(); i++) {
-      //             String key = extraNames.getString(i);
-      //             String value = extras.getString(key);
-      //             extrasMap.put(key, value);
-      //         }
-      //     }
-      //
-      //     try {
-      //       forceActivity(obj.getString("action"), uri, type, extrasMap);
-      //       callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
-      //       return true;
-      //     } catch (Error e) {
-      //       return false;
-      //     }
-      // }
-      return false;
+        else if (action.equals("getLocationIntent")) {
+            try {
+                Intent getLocationIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // addAccountIntent.putExtra(Settings.EXTRA_ACCOUNT_TYPES, new String[] {"com.google"});
+                cordova.getActivity().getApplicationContext().startActivity(getLocationIntent);
+
+                callbackContext.success();
+            } catch (Error e) {
+                return false;
+            }
+        }
+        else if (action.equals("getGooglePlayServices")) {
+            /**
+             * Check the device to make sure it has the Google Play Services APK. If
+             * it doesn't, display a dialog that allows users to download the APK from
+             * the Google Play Store or enable it in the device's system settings.
+             */
+            public static boolean checkGooglePlayServices(Activity activity) {
+                int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
+                if (resultCode != ConnectionResult.SUCCESS) {
+                    if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                        GooglePlayServicesUtil.getErrorDialog(resultCode, activity, 9000).show();
+                    }
+                    return false;
+                }
+                return true;
+            }
+
+            checkGooglePlayServics(cordova.getActivity());
+        }
+        //   else if (action.equals("forceAppUpdate")) {
+        //     // Parse the arguments
+        //     JSONObject obj = args.getJSONObject(0);
+        //     String type = obj.has("type") ? obj.getString("type") : null;
+        //     Uri uri = obj.has("url") ? Uri.parse(obj.getString("url")) : null;
+        //     JSONObject extras = obj.has("extras") ? obj.getJSONObject("extras") : null;
+        //     Map<String, String> extrasMap = new HashMap<String, String>();
+        //
+        //     // Populate the extras if any exist
+        //     if (extras != null) {
+        //         JSONArray extraNames = extras.names();
+        //         for (int i = 0; i < extraNames.length(); i++) {
+        //             String key = extraNames.getString(i);
+        //             String value = extras.getString(key);
+        //             extrasMap.put(key, value);
+        //         }
+        //     }
+        //
+        //     try {
+        //       forceActivity(obj.getString("action"), uri, type, extrasMap);
+        //       callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
+        //       return true;
+        //     } catch (Error e) {
+        //       return false;
+        //     }
+        // }
+        return false;
     }
 
     // static final int FORCE_UPDATE_APP = 1; //request code
