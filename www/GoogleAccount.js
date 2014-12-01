@@ -29,6 +29,14 @@ CK.app = {
       'getGooglePlayServices', []);
   },
   hideKeyboard: function(successCallback, failureCallback){
+    if (!successCallback) {
+      successCallback = null;
+    }
+
+    if (!failureCallback) {
+      failureCallback = null;
+    }
+
     return cordova.exec(successCallback, failureCallback, 'GoogleAccountPlugin',
     'hideKeyboard', []);
   }
