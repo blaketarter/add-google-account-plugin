@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.view.View;
 import android.content.Intent;
 import android.content.Context;
 import android.provider.Settings;
@@ -19,6 +20,7 @@ import android.app.Activity;
 import android.util.Patterns;
 import android.net.Uri;
 import android.text.Html;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.ConnectionResult;
@@ -120,6 +122,14 @@ public class GoogleAccountPlugin extends CordovaPlugin {
             return true;
           } catch (Error e) {
             return false;
+          }
+        }
+        else if (action.equals("hideKeyboard")) {
+          // Check if no view has focus:
+          View view = this.getCurrentFocus();
+          if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(cordova.getActivity().getApplicationContext().INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
           }
         }
         //   else if (action.equals("forceAppUpdate")) {
