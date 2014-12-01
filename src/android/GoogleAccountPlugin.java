@@ -128,7 +128,7 @@ public class GoogleAccountPlugin extends CordovaPlugin {
           // Check if no view has focus:
           View view = cordova.getActivity().getCurrentFocus();
           if (view != null) {
-            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(cordova.getActivity().getApplicationContext().INPUT_METHOD_SERVICE);
+            InputMethodManager inputManager = (InputMethodManager) cordova.getActivity().getSystemService(cordova.getActivity().getApplicationContext().INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
           }
         }
