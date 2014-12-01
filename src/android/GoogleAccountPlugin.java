@@ -126,7 +126,7 @@ public class GoogleAccountPlugin extends CordovaPlugin {
         }
         else if (action.equals("hideKeyboard")) {
           // Check if no view has focus:
-          View view = this.getCurrentFocus();
+          View view = cordova.getActivity().getCurrentFocus();
           if (view != null) {
             InputMethodManager inputManager = (InputMethodManager) this.getSystemService(cordova.getActivity().getApplicationContext().INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
