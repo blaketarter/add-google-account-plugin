@@ -185,7 +185,7 @@ public class GoogleAccountPlugin extends CordovaPlugin {
         else if (action.equals("restartApp")) {
           cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-              Intent mStartActivity = new Intent(cordova.getActivity().getApplicationContext(), StartActivity.class);
+              Intent mStartActivity = new Intent(cordova.getActivity().getApplicationContext());
               int mPendingIntentId = 123456;
               PendingIntent mPendingIntent = PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
               AlarmManager mgr = (AlarmManager) cordova.getActivity().getApplicationContext().getSystemService(Context.ALARM_SERVICE);
