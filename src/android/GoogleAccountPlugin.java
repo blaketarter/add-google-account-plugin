@@ -21,7 +21,7 @@ import android.util.Patterns;
 import android.net.Uri;
 import android.text.Html;
 import android.view.inputmethod.InputMethodManager;
-import android.os.Build.VERSION;
+import android.os.Build;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.ConnectionResult;
@@ -157,7 +157,6 @@ public class GoogleAccountPlugin extends CordovaPlugin {
           +"\nUNKNOWN : "+Build.UNKNOWN
           +"\nUSER : "+Build.USER;
 
-          Log.d("Device Details",details);
           callbackContext.success(details);
         }
 
