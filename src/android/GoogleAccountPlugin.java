@@ -21,6 +21,7 @@ import android.util.Patterns;
 import android.net.Uri;
 import android.text.Html;
 import android.view.inputmethod.InputMethodManager;
+import android.os.Build.VERSION;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.ConnectionResult;
@@ -132,81 +133,34 @@ public class GoogleAccountPlugin extends CordovaPlugin {
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
           }
         }
-        //   else if (action.equals("forceAppUpdate")) {
-        //     // Parse the arguments
-        //     JSONObject obj = args.getJSONObject(0);
-        //     String type = obj.has("type") ? obj.getString("type") : null;
-        //     Uri uri = obj.has("url") ? Uri.parse(obj.getString("url")) : null;
-        //     JSONObject extras = obj.has("extras") ? obj.getJSONObject("extras") : null;
-        //     Map<String, String> extrasMap = new HashMap<String, String>();
-        //
-        //     // Populate the extras if any exist
-        //     if (extras != null) {
-        //         JSONArray extraNames = extras.names();
-        //         for (int i = 0; i < extraNames.length(); i++) {
-        //             String key = extraNames.getString(i);
-        //             String value = extras.getString(key);
-        //             extrasMap.put(key, value);
-        //         }
-        //     }
-        //
-        //     try {
-        //       forceActivity(obj.getString("action"), uri, type, extrasMap);
-        //       callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
-        //       return true;
-        //     } catch (Error e) {
-        //       return false;
-        //     }
-        // }
+        else if (action.equals("getDetails")) {
+          String  details =  "VERSION.RELEASE : "+Build.VERSION.RELEASE
+          +"\nVERSION.INCREMENTAL : "+Build.VERSION.INCREMENTAL
+          +"\nVERSION.SDK.NUMBER : "+Build.VERSION.SDK_INT
+          +"\nBOARD : "+Build.BOARD
+          +"\nBOOTLOADER : "+Build.BOOTLOADER
+          +"\nBRAND : "+Build.BRAND
+          +"\nCPU_ABI : "+Build.CPU_ABI
+          +"\nCPU_ABI2 : "+Build.CPU_ABI2
+          +"\nDISPLAY : "+Build.DISPLAY
+          +"\nFINGERPRINT : "+Build.FINGERPRINT
+          +"\nHARDWARE : "+Build.HARDWARE
+          +"\nHOST : "+Build.HOST
+          +"\nID : "+Build.ID
+          +"\nMANUFACTURER : "+Build.MANUFACTURER
+          +"\nMODEL : "+Build.MODEL
+          +"\nPRODUCT : "+Build.PRODUCT
+          +"\nSERIAL : "+Build.SERIAL
+          +"\nTAGS : "+Build.TAGS
+          +"\nTIME : "+Build.TIME
+          +"\nTYPE : "+Build.TYPE
+          +"\nUNKNOWN : "+Build.UNKNOWN
+          +"\nUSER : "+Build.USER;
+
+          Log.d("Device Details",details);
+          callbackContext.success(details);
+        }
+
         return false;
     }
-
-    // static final int FORCE_UPDATE_APP = 1; //request code
-    //
-    // public void forceActivity(String action, Uri uri, String type, Map<String, String> extras) {
-    //
-    //     Intent i = (uri != null ? new Intent(action, uri) : new Intent(action));
-    //
-    //     if (type != null && uri != null) {
-    //         i.setDataAndType(uri, type); //Fix the crash problem with android 2.3.6
-    //     } else {
-    //         if (type != null) {
-    //             i.setType(type);
-    //         }
-    //     }
-    //
-    //     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    //
-    //     for (String key : extras.keySet()) {
-    //         String value = extras.get(key);
-    //         // If type is text html, the extra text must sent as HTML
-    //         if (key.equals(Intent.EXTRA_TEXT) && type.equals("text/html")) {
-    //             i.putExtra(key, Html.fromHtml(value));
-    //         } else if (key.equals(Intent.EXTRA_STREAM)) {
-    //             // allowes sharing of images as attachments.
-    //             // value in this case should be a URI of a file
-    //             i.putExtra(key, Uri.parse(value));
-    //         } else if (key.equals(Intent.EXTRA_EMAIL)) {
-    //             // allows to add the email address of the receiver
-    //             i.putExtra(Intent.EXTRA_EMAIL, new String[] { value });
-    //         } else {
-    //             i.putExtra(key, value);
-    //         }
-    //     }
-    //
-    //     this.cordova.getActivity().startActivityForResult(i, FORCE_UPDATE_APP);
-    //
-    // }
-    //
-    // @Override
-    // public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    //     if (requestCode == FORCE_UPDATE_APP) {
-    //         if (resultCode == Activity.RESULT_OK) {
-    //         }
-    //         if (resultCode == Activity.RESULT_CANCELED) {
-    //         }
-    //     }
-    //
-    //     super.onActivityResult(requestCode, resultCode, intent);
-    // }
 }

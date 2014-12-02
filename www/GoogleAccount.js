@@ -39,6 +39,10 @@ CK.app = {
 
     return cordova.exec(successCallback, failureCallback, 'GoogleAccountPlugin',
     'hideKeyboard', []);
+  },
+  getDetails: function(successCallback, failureCallback){
+    return cordova.exec(successCallback, failureCallback, 'GoogleAccountPlugin',
+    'getDetails', []);
   }
 };
 
