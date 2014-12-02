@@ -180,6 +180,15 @@ public class GoogleAccountPlugin extends CordovaPlugin {
             return false;
           }
         }
+        else if (action.equals("restartApp")) {
+          Intent i = getBaseContext().getPackageManager()
+                     .getLaunchIntentForPackage(getBaseContext().getPackageName());
+
+          i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+          startActivity(i);
+
+          return true;
+        }
 
         return false;
     }
