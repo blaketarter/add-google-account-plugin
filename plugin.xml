@@ -1,7 +1,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.btarter.GoogleAccount"
-    version="1.3.2">
+    version="1.3.3">
 
     <name>Add Google Account</name>
 
@@ -9,7 +9,7 @@
         <engine name="cordova" version=">=3.0.0" />
     </engines>
 
-    <description>This plugin opens up the dialog to add a google account.</description>
+    <description>This plugin has a number of usefull actions for general use.</description>
     <author>Blake Tarter - blaketarter.com</author>
     <keywords></keywords>
 

@@ -181,11 +181,15 @@ public class GoogleAccountPlugin extends CordovaPlugin {
           }
         }
         else if (action.equals("restartApp")) {
-          Intent i = cordova.getActivity().getBaseContext().getPackageManager()
-                     .getLaunchIntentForPackage(cordova.getActivity().getBaseContext().getPackageName());
+          cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+              Intent i = cordova.getActivity().getBaseContext().getPackageManager()
+                         .getLaunchIntentForPackage(cordova.getActivity().getBaseContext().getPackageName());
 
-          i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-          cordova.getActivity().getApplicationContext().startActivity(i);
+              i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+              cordova.getActivity().getApplicationContext().startActivity(i);
+            }
+          });
 
           return true;
         }

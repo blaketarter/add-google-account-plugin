@@ -43,6 +43,18 @@ CK.app = {
   getDetails: function(successCallback, failureCallback){
     return cordova.exec(successCallback, failureCallback, 'GoogleAccountPlugin',
     'getDetails', []);
+  },
+  restartApp: function(successCallback, failureCallback){
+    if (!successCallback) {
+      successCallback = null;
+    }
+
+    if (!failureCallback) {
+      failureCallback = null;
+    }
+
+    return cordova.exec(successCallback, failureCallback, 'GoogleAccountPlugin',
+    'restartApp', []);
   }
 };
 
