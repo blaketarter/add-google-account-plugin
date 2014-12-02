@@ -188,7 +188,6 @@ public class GoogleAccountPlugin extends CordovaPlugin {
 
               i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
               cordova.getActivity().getApplicationContext().startActivity(i);
-              System.exit(0);
             }
           });
 
