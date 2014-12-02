@@ -17,6 +17,8 @@ import android.provider.Settings;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.app.AlarmManager;
 import android.util.Patterns;
 import android.net.Uri;
 import android.text.Html;
@@ -183,11 +185,12 @@ public class GoogleAccountPlugin extends CordovaPlugin {
         else if (action.equals("restartApp")) {
           cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-              Intent i = cordova.getActivity().getBaseContext().getPackageManager()
-                         .getLaunchIntentForPackage(cordova.getActivity().getBaseContext().getPackageName());
-
-              i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-              cordova.getActivity().getApplicationContext().startActivity(i);
+              Intent mStartActivity = new Intent(cordova.getActivity().getApplicationContext(), StartActivity.class);
+              int mPendingIntentId = 123456;
+              PendingIntent mPendingIntent = PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+              AlarmManager mgr = (AlarmManager) cordova.getActivity().getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+              mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+              System.exit(0);
             }
           });
 
