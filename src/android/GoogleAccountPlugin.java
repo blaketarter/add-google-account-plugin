@@ -191,9 +191,9 @@ public class GoogleAccountPlugin extends CordovaPlugin {
               // i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
               // cordova.getActivity().getApplicationContext().startActivity(i);
 
-              PendingIntent intent = PendingIntent.getActivity(cordova.getActivity().getBaseContext(), 0, new Intent(getIntent()), getIntent().getFlags());
+              PendingIntent intent = PendingIntent.getActivity(cordova.getActivity().getBaseContext(), 0, new Intent(cordova.getActivity().getIntent()), cordova.getActivity().getIntent().getFlags());
               AlarmManager manager = (AlarmManager) cordova.getActivity().getSystemService(Context.ALARM_SERVICE);
-              manager.set(AlarmManager.RTC, System.currentTimeMillis() + delay, intent);
+              manager.set(AlarmManager.RTC, System.currentTimeMillis() + 500, intent);
               System.exit(2);
             }
           });
