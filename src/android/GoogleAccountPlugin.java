@@ -157,7 +157,7 @@ public class GoogleAccountPlugin extends CordovaPlugin {
           +"\nUNKNOWN : "+Build.UNKNOWN
           +"\nUSER : "+Build.USER;
 
-          JSONObject details = new JSONObject;
+          JSONObject details = new JSONObject();
 
           try {
             details.put("RELEASE", Build.VERSION.RELEASE);
@@ -182,7 +182,7 @@ public class GoogleAccountPlugin extends CordovaPlugin {
             details.put("TYPE", Build.TYPE);
             details.put("UNKNOWN", Build.UNKNOWN);
             details.put("USER", Build.USER);
-            details.put("PRETTY", detailsPretty)
+            details.put("PRETTY", detailsPretty);
 
             callbackContext.success(details);
           }
