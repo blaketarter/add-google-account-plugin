@@ -134,7 +134,7 @@ public class GoogleAccountPlugin extends CordovaPlugin {
           }
         }
         else if (action.equals("getDetails")) {
-          String  details =  "VERSION.RELEASE : "+Build.VERSION.RELEASE
+          String  detailsPretty =  "VERSION.RELEASE : "+Build.VERSION.RELEASE
           +"\nVERSION.INCREMENTAL : "+Build.VERSION.INCREMENTAL
           +"\nVERSION.SDK.NUMBER : "+Build.VERSION.SDK_INT
           +"\nBOARD : "+Build.BOARD
@@ -157,7 +157,38 @@ public class GoogleAccountPlugin extends CordovaPlugin {
           +"\nUNKNOWN : "+Build.UNKNOWN
           +"\nUSER : "+Build.USER;
 
-          callbackContext.success(details);
+          JSONObject details = new JSONObject;
+
+          try {
+            details.put("RELEASE", Build.VERSION.RELEASE);
+            details.put("INCREMENTAL", Build.VERSION.INCREMENTAL);
+            details.put("SDK", Build.VERSION.SDK_INT);
+            details.put("BOARD", Build.BOARD);
+            details.put("BOOTLOADER", Build.BOOTLOADER);
+            details.put("BRAND", Build.BRAND);
+            details.put("CPU_ABI", Build.CPU_ABI);
+            details.put("CPU_ABI2", Build.CPU_ABI2);
+            details.put("DISPLAY", Build.DISPLAY);
+            details.put("FINGERPRINT", Build.FINGERPRINT);
+            details.put("HARDWARE", Build.HARDWARE);
+            details.put("HOST", Build.HOST);
+            details.put("ID", Build.ID);
+            details.put("MANUFACTURER", Build.MANUFACTURER);
+            details.put("MODEL", Build.MODEL);
+            details.put("PRODUCT", Build.PRODUCT);
+            details.put("SERIAL", Build.SERIAL);
+            details.put("TAGS", Build.TAGS);
+            details.put("TIME", Build.TIME);
+            details.put("TYPE", Build.TYPE);
+            details.put("UNKNOWN", Build.UNKNOWN);
+            details.put("USER", Build.USER);
+            details.put("PRETTY", detailsPretty)
+
+            callbackContext.success(details);
+          }
+          catch (JSONException e) {
+            return false;
+          }
         }
 
         return false;
