@@ -185,7 +185,7 @@ public class GoogleAccountPlugin extends CordovaPlugin {
                      .getLaunchIntentForPackage(cordova.getActivity().getBaseContext().getPackageName());
 
           i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-          startActivity(i);
+          cordova.getActivity().getApplicationContext().startActivity(i);
 
           return true;
         }
