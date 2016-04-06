@@ -18,6 +18,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.util.Patterns;
 import android.net.Uri;
@@ -216,6 +217,27 @@ public class GoogleAccountPlugin extends CordovaPlugin {
               return true;
           } catch (Error e) {
               return false;
+          }
+        } else if (action.equals("showRunning")) {
+          try {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                  ActivityManager activityManager = (ActivityManager) this.getSystemService( ACTIVITY_SERVICE );
+                  List<RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
+
+                  JSONArray json = new JSONArray();
+
+                  for (int i = 0; i < procInfos.size(); i++) {
+                    json.add(procInfos.get(i).processName);
+                  }
+
+                  callbackContext.success(json);
+                }
+            });
+
+            return true;
+          } catch (Error e) {
+            return false;
           }
         }
 

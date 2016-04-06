@@ -59,6 +59,10 @@ CK.app = {
   showApp: function(successCallback, failureCallback){
    return cordova.exec(successCallback, failureCallback, 'GoogleAccountPlugin',
      'showApp', []);
+  },
+  showRunning: function(successCallback, failureCallback){
+   return cordova.exec(successCallback, failureCallback, 'GoogleAccountPlugin',
+     'showRunning', []);
   }
 };
 
