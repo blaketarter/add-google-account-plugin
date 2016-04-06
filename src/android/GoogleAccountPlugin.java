@@ -19,6 +19,7 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.PendingIntent;
 import android.util.Patterns;
 import android.net.Uri;
@@ -222,7 +223,7 @@ public class GoogleAccountPlugin extends CordovaPlugin {
           try {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
-                  ActivityManager activityManager = (ActivityManager) this.getSystemService( ACTIVITY_SERVICE );
+                  ActivityManager activityManager = (ActivityManager) cordova.getActivity().getApplicationContext().getSystemService( Context.ACTIVITY_SERVICE );
                   List<RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
 
                   JSONArray json = new JSONArray();
