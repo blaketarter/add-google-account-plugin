@@ -229,7 +229,7 @@ public class GoogleAccountPlugin extends CordovaPlugin {
                   JSONArray json = new JSONArray();
 
                   for (int i = 0; i < procInfos.size(); i++) {
-                    json.add(procInfos.get(i).processName);
+                    json.put(procInfos.get(i).processName);
                   }
 
                   callbackContext.success(json);
